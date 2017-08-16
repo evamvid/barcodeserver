@@ -17,9 +17,9 @@ def index():
 
 @app.route('/', methods =['POST'])
 def parse_request(): 
-    data = request.args.to_dict()
-    print(data)
-    sys.stdout.flush()
+    #data = request.args.to_dict()
+    #print(data)
+    #sys.stdout.flush()
     form = list(request.form.to_dict().keys())[0]
     print(form)
     sys.stdout.flush()
@@ -28,10 +28,9 @@ def parse_request():
     barcodes.append(form)
     return str(form)
 
-@app.route('/result', methods =['POST', 'GET'])
+@app.route('/result', methods =['GET'])
 def clearall():
-    for item in barcodes:
-         barcodes.remove(item)
+    del barcodes[:]
     return redirect('/')
 
 if __name__ == '__main__':

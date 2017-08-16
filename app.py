@@ -5,14 +5,36 @@ from flask import request
 from flask import render_template
 from flask import redirect
 import sys
+import csv   
 
 app = Flask(__name__)
 
 barcodes = []
 
+open('list.csv', 'w').close()#initializes list.csv file
+
+def csvappend(string):
+    print(string)
+    with open('list.csv', 'a+') as f:
+        writer = csv.writer(f, delimiter = ",")
+        writer.writerow([string])
+
+def csvretrieve():
+    del barcodes[:]
+    with open('list.csv', 'r') as f:
+         reader = csv.reader(f, delimiter=',')
+         for code in reader:
+             barcodes.append(code)
+    return(barcodes)
+
+def csvclear():
+    open('list.csv', 'w').close()
+
 @app.route('/', methods =['GET'])
 def index():
     #return str(barcodes)	
+    #return  render_template('index.html', barcodes = barcodes)
+    csvretrieve()
     return  render_template('index.html', barcodes = barcodes)
 
 @app.route('/', methods =['POST'])
@@ -25,12 +47,14 @@ def parse_request():
     sys.stdout.flush()
     print(type(form))
     sys.stdout.flush()
-    barcodes.append(form)
+    csvappend(str(form))
+    #barcodes.append(form)
     return str(form)
 
 @app.route('/result', methods =['GET'])
 def clearall():
     del barcodes[:]
+    csvclear()
     return redirect('/')
 
 if __name__ == '__main__':

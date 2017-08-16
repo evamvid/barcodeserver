@@ -1,1 +1,1 @@
-web: gunicorn app:barcodeserver --log-file=-
+web: gunicorn app:app --log-file=-

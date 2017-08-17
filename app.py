@@ -24,7 +24,7 @@ def csvretrieve():
     with open('list.csv', 'r') as f:
          reader = csv.reader(f, delimiter=',')
          for code in reader:
-             barcodes.append(code)
+             barcodes.append(code[0])
     return(barcodes)
 
 def csvclear():
